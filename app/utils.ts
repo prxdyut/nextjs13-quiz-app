@@ -46,28 +46,28 @@ export const getBooks = async (data: data_) => {
           value.includes(data.class.all[data.class.selected - 1]) &&
           value.includes(data.categories.all[data.categories.selected - 1])
       )
-    ) + 1;
-
+    ) ;
   let res = { keys: [], all: [] };
   const data_: NodeListOf<Element> = await getDOMFor(
     shaalaaTextSol,
     `#content .grid_right .grid_col_left .block.clearfix:nth-of-type(${index}) a`
   );
+
   data_.forEach((elem) => {
     res.keys.push(elem.getAttribute("href"));
     res.all.push(
       elem.textContent
-        .replace(
-          data.categories.all[data.categories.selected - 1] + " for ",
-          ""
-        )
+        .replace(data.categories.all[data.categories.selected] + " for ", "")
         .toLowerCase()
     );
   });
   const commonWords: string[] = findCommonWords(res.all);
-  res.all = res.all.map((title) =>
-    capitalizeFirstLetter(removeWordsFromString(title, commonWords))
-  );
+  res.all =
+    res.all.length > 1
+      ? res.all.map((title) =>
+          capitalizeFirstLetter(removeWordsFromString(title, commonWords))
+        )
+      : res.all.map((_) => capitalizeFirstLetter(_));
   return res;
 };
 
@@ -178,7 +178,6 @@ export const getAnswers = async (data: data_) => {
   let concepts: Array<string> = [];
 
   await data.questions.contents.forEach(async (a) => {
-    console.log(a);
     const data = await getDOMFor(a, `#content .grid_col_left`);
     const data_ = data[0].querySelectorAll(".qbq_text_solution");
     const data__ = data[0].querySelectorAll(
