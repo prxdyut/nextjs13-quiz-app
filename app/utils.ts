@@ -46,7 +46,7 @@ export const getBooks = async (data: data_) => {
           value.includes(data.class.all[data.class.selected - 1]) &&
           value.includes(data.categories.all[data.categories.selected - 1])
       )
-    ) ;
+    ) + 1;
   let res = { keys: [], all: [] };
   const data_: NodeListOf<Element> = await getDOMFor(
     shaalaaTextSol,
