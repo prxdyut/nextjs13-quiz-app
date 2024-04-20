@@ -32,22 +32,24 @@ import { Solution } from "./Solution";
 import { ImportantResults } from "./ImportantResults";
 import { Class_ } from "./Class";
 import { ErrorHandler } from "./ErrorHandler";
+import { useLocalStorage, useSessionStorage } from "@mantine/hooks";
 
 export default function Page() {
   const [error, setError] = useState<false | Error>(false);
-
-  
-  const [data, setData] = useState<data_>({
-    list: [],
-    categories: default_,
-    class: default_,
-    books: default_,
-    questions: default_,
-    chapters: default_,
-    topics: default_,
-    answers: [],
-    concepts: [],
-    answerType: "",
+  const [data, setData] = useSessionStorage<data_>({
+    key: "data",
+    defaultValue: {
+      selected: [],
+      categories: default_,
+      class: default_,
+      books: default_,
+      questions: default_,
+      chapters: default_,
+      topics: default_,
+      answers: [],
+      concepts: [],
+      answerType: "",
+    },
   });
 
   useEffect(() => {

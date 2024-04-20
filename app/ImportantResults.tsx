@@ -82,7 +82,7 @@ export function FilteredResults({
               }}
             >
               <Questions
-                checked={checked}
+                checked={Boolean(checked)}
                 data={{
                   ...data,
                   questions: {
@@ -131,7 +131,7 @@ export function FilteredResults({
                 }}
               >
                 <Questions
-                  checked={checked}
+                  checked={Boolean(checked)}
                   data={{
                     ...data,
                     questions: {
@@ -152,11 +152,12 @@ export function FilteredResults({
         </Stack>
       )}
       {filter == "" && (
-        <Questions checked={checked} data={data} set={() => {}} />
+        <Questions checked={Boolean(checked)} data={data} set={() => {}} />
       )}
     </Box>
   );
 }
+
 export function ImportantResults({ data, set }: { data: data_; set: set_ }) {
   const {
     getRootProps,
@@ -216,7 +217,7 @@ export function ImportantResults({ data, set }: { data: data_; set: set_ }) {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={data.answers.length && checked}
+                    checked={data.answers.length && Boolean(checked)}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                       setChecked(event.target.checked);
                     }}
@@ -257,7 +258,7 @@ export function ImportantResults({ data, set }: { data: data_; set: set_ }) {
               },
             }}
             filter={filter}
-            checked={checked}
+            checked={Boolean(checked)}
           ></FilteredResults>
         </Box>
       ) : (
@@ -265,7 +266,7 @@ export function ImportantResults({ data, set }: { data: data_; set: set_ }) {
           <FilteredResults
             data={data}
             filter={filter}
-            checked={checked}
+            checked={Boolean(checked)}
           ></FilteredResults>
         </Box>
       )}

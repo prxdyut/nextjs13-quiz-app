@@ -87,7 +87,7 @@ export function FilteredResults({
                 }}
               >
                 <Questions
-                  checked={checked}
+                  checked={Boolean(checked)}
                   data={{
                     ...data,
                     questions: {
@@ -136,7 +136,7 @@ export function FilteredResults({
                 }}
               >
                 <Questions
-                  checked={checked}
+                  checked={Boolean(checked)}
                   data={{
                     ...data,
                     questions: {
@@ -185,7 +185,7 @@ export function FilteredResults({
                 }}
               >
                 <Questions
-                  checked={checked}
+                  checked={Boolean(checked)}
                   data={{
                     ...data,
                     questions: {
@@ -234,7 +234,7 @@ export function FilteredResults({
                 }}
               >
                 <Questions
-                  checked={checked}
+                  checked={Boolean(checked)}
                   data={{
                     ...data,
                     questions: {
@@ -255,7 +255,7 @@ export function FilteredResults({
         </Stack>
       )}
       {filter == "" && (
-        <Questions checked={checked} data={data} set={() => {}} />
+        <Questions checked={Boolean(checked)} data={data} set={() => {}} />
       )}
     </Box>
   );
@@ -278,27 +278,25 @@ export function TextbookResults({ data, set }: { data: data_; set: set_ }) {
 
   return data.answerType == "Textbook Solutions" ? (
     <Stack gap={1}>
-      {data.questions.all.length > 0 && (
-        <>
-          <TextField
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <FiSearch size={20} />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <IconButton onClick={() => setValue("")}>
-                  {value && <CgClose />}
-                </IconButton>
-              ),
-            }}
-            placeholder="Search"
-            inputProps={getInputProps()}
-            fullWidth
-          />
-        </>
-      )}
+      <Fade in={data.questions.all.length > 0}>
+        <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <FiSearch size={20} />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <IconButton onClick={() => setValue("")}>
+                {value && <CgClose />}
+              </IconButton>
+            ),
+          }}
+          placeholder="Search"
+          inputProps={getInputProps()}
+          fullWidth
+        />
+      </Fade>
 
       <Collapse in={!(getInputProps().value == "")}>
         <Typography sx={{ mt: 2 }} variant="overline">
@@ -319,7 +317,7 @@ export function TextbookResults({ data, set }: { data: data_; set: set_ }) {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={data.answers.length && checked}
+                    checked={Boolean(data.answers.length) && Boolean(checked)}
                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
                       setChecked(event.target.checked);
                     }}
@@ -362,7 +360,7 @@ export function TextbookResults({ data, set }: { data: data_; set: set_ }) {
               },
             }}
             filter={filter}
-            checked={checked}
+            checked={Boolean(checked)}
           ></FilteredResults>
         </Box>
       ) : (
@@ -370,7 +368,7 @@ export function TextbookResults({ data, set }: { data: data_; set: set_ }) {
           <FilteredResults
             data={data}
             filter={filter}
-            checked={checked}
+            checked={Boolean(checked)}
           ></FilteredResults>
         </Box>
       )}

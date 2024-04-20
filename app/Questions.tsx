@@ -5,7 +5,10 @@ import {
   AccordionSummary,
   Box,
   Button,
+  Checkbox,
   Divider,
+  FormControlLabel,
+  FormGroup,
   Stack,
 } from "@mui/material";
 import React from "react";
@@ -25,15 +28,20 @@ export function Questions({
   return (
     <Stack gap={4} divider={<Divider />}>
       {data.questions.all.map((q, index) => (
-        <div
+        <Box
           key={index}
-          style={{
+          sx={{
             fontSize: "1.1rem",
           }}
           onClick={() => {
             // setQuestions((_) => ({ ..._, selected: index + 1 }));
           }}
         >
+          <Box sx={{ display: "flex" }}>
+            <FormGroup>
+              <FormControlLabel control={<Checkbox />} label="Select" />
+            </FormGroup>
+          </Box>
           <Box sx={{ overflow: "auto" }}>
             <MathJax inline dynamic>
               <div
@@ -76,7 +84,7 @@ export function Questions({
                 </AccordionDetails>
               </Accordion>
             ))}
-        </div>
+        </Box>
       ))}
     </Stack>
   );
