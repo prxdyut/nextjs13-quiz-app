@@ -4,7 +4,9 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Button, Divider, Stack
+  Button,
+  Divider,
+  Stack,
 } from "@mui/material";
 import React from "react";
 import { MathJax } from "better-react-mathjax";
@@ -12,7 +14,9 @@ import { set_ } from "./types";
 import { data_ } from "./types";
 
 export function Questions({
-  data, set, checked,
+  data,
+  set,
+  checked,
 }: {
   data: data_;
   set: set_;
@@ -36,12 +40,14 @@ export function Questions({
                 dangerouslySetInnerHTML={{
                   __html: q,
                 }}
-                className="answer" />
+                className="answer"
+              />
             </MathJax>
           </Box>
           {checked &&
             data.answers[index]?.map((ans, i) => (
               <Accordion
+                key={i}
                 elevation={0}
                 slotProps={{ transition: { unmountOnExit: true } }}
                 sx={{ "&:before": { display: "none" } }}
@@ -64,7 +70,8 @@ export function Questions({
                       key={i}
                       dangerouslySetInnerHTML={{
                         __html: ans,
-                      }} />
+                      }}
+                    />
                   </MathJax>
                 </AccordionDetails>
               </Accordion>

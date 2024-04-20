@@ -5,25 +5,27 @@ import { default_ } from "./consts";
 import { set_ } from "./types";
 import { data_ } from "./types";
 
-export function Chapters({ data, set }: { data: data_; set: set_; }) {
+export function Books({ data, set }: { data: data_; set: set_; }) {
   return (
     <Autocomplete
       disablePortal
       onChange={(e, newValue) => {
-        const index = data.chapters.all.indexOf(newValue);
+        const index = data.books.all.indexOf(newValue);
         set(
           (_: data_): data_ => ({
             ..._,
-            chapters: { ..._.chapters, selected: index + 1 },
+            books: { ..._.books, selected: index + 1 },
+            chapters: default_,
             questions: default_,
             answers: [],
             concepts: [],
+            answerType: ''
           })
         );
       }}
       fullWidth
-      value={data.chapters.all[data.chapters.selected - 1] || ""}
-      options={data.chapters.all}
-      renderInput={(params) => <TextField {...params} label="Chapter" />} />
+      value={data.books.all[data.books.selected - 1] || ""}
+      options={data.books.all}
+      renderInput={(params) => <TextField {...params} label="Book" />} />
   );
 }

@@ -6,6 +6,7 @@ import { set_ } from "./types";
 import { data_ } from "./types";
 
 export function Categories({ data, set }: { data: data_; set: set_; }) {
+
   return (
     <Autocomplete
       disablePortal
@@ -16,10 +17,12 @@ export function Categories({ data, set }: { data: data_; set: set_; }) {
             ..._,
             categories: { ..._.categories, selected: index + 1 },
             books: default_,
+            class: default_,
             chapters: default_,
             questions: default_,
             answers: [],
             concepts: [],
+            answerType: ''
           })
         );
       }}

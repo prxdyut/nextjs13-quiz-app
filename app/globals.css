@@ -32,7 +32,12 @@ a.button_link.view_solution, .header_text, .qbq_show_hide_solution{
   gap: 16px;
 }
 
-.filtered .qp_result_data_data_meta {
+.filtered .qp_result_data_data_meta, .qp_result_data_data_inner {
   display: none;
 }
 
+.important .answer{
+display: flex;
+flex-direction: column-reverse;
+margin-bottom: 8px;
+}
