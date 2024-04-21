@@ -1,13 +1,13 @@
 "use client";
-import { Button, Container, Stack } from "@mui/material";
+import { Box, Button, Container, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { MathJaxContext } from "better-react-mathjax";
+import { MathJax, MathJaxContext } from "better-react-mathjax";
 import { Categories } from "./Categories";
 import { Books } from "./Books";
 import { Chapters } from "./Chapters";
 import { LoadHandler } from "./LoadHandler";
 import { TextbookResults } from "./TextbookResults";
-import { data_ } from "./types";
+import { data_, selected_ } from "./types";
 import {
   getBookCategory,
   getBooks,
@@ -34,23 +34,23 @@ import { Class_ } from "./Class";
 import { ErrorHandler } from "./ErrorHandler";
 import { useLocalStorage, useSessionStorage } from "@mantine/hooks";
 
-export default function Page() {
+export default function QuestionsPage() {
   const [error, setError] = useState<false | Error>(false);
-  const [data, setData] = useSessionStorage<data_>({
-    key: "data",
-    defaultValue: {
-      selected: [],
-      categories: default_,
-      class: default_,
-      books: default_,
-      questions: default_,
-      chapters: default_,
-      topics: default_,
-      answers: [],
-      concepts: [],
-      answerType: "",
-    },
+
+  const [data, setData] = useState<data_>({
+    categories: default_,
+    class: default_,
+    books: default_,
+    questions: default_,
+    chapters: default_,
+    topics: default_,
+    answers: [],
+    concepts: [],
+    answerType: "",
   });
+
+  const [selected, setSelected] = useState<selected_>( []);
+  console.log(selected)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -101,6 +101,7 @@ export default function Page() {
 
     fetchData();
   }, [data.class]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -176,8 +177,16 @@ export default function Page() {
           <Books data={data} set={setData} />
           <Solution data={data} set={setData} />
           <Chapters data={data} set={setData} />
-          <TextbookResults data={data} set={() => {}} />
-          <ImportantResults data={data} set={() => {}} />
+          <TextbookResults
+            selected={{ data: selected, set: setSelected }}
+            data={data}
+            set={setData}
+          />
+          <ImportantResults
+            selected={{ data: selected, set: setSelected }}
+            data={data}
+            set={setData}
+          />
         </Stack>
       </Container>
     </MathJaxContext>

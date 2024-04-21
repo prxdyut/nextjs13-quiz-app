@@ -24,141 +24,20 @@ import {
   Fade,
 } from "@mui/material";
 import React, { ChangeEvent, useState } from "react";
-import { set_, data_ } from "./types";
+import { set_, data_, selected_ } from "./types";
 import { Questions } from "./Questions";
 import { uniqueValue } from "./helpers";
 import { IoChevronDown } from "react-icons/io5";
 
-export function FilteredResults({
+export function ImportantResults({
+  selected,
   data,
-  filter,
-  checked,
+  set,
 }: {
+  selected: { data: selected_; set: set_ };
   data: data_;
-  filter: string;
-  checked: boolean;
+  set: set_;
 }) {
-  const questionTypes = uniqueValue(
-    data.questions?.categories?.map((_: string) => _.split(" | ")[0])
-  );
-  const TopicWise = uniqueValue(data.concepts);
-
-  return (
-    <Box
-      sx={{
-        my: 0,
-        mx: 1,
-      }}
-      className='important'
-    >
-    {filter == "1" && (
-      <Stack gap={1} className="filtered">
-        {questionTypes.map((type: string) => (
-          <Accordion
-            elevation={0}
-            slots={{ transition: Fade }}
-            slotProps={{
-              transition: {
-                unmountOnExit: true,
-                timeout: 250,
-              },
-            }}
-          >
-            <AccordionSummary
-              sx={{
-                mx: 0,
-                px: 0,
-                borderRadius: 2,
-                fontWeight: 600,
-              }}
-              expandIcon={<IoChevronDown />}
-            >
-              {type}
-            </AccordionSummary>
-            <AccordionDetails
-              sx={{
-                mx: 0,
-                px: 0,
-              }}
-            >
-              <Questions
-                checked={Boolean(checked)}
-                data={{
-                  ...data,
-                  questions: {
-                    ...data.questions,
-                    all: data.questions.all.filter((_) => _.includes(type)),
-                  },
-                  answers: data.answers.filter((ans, i) =>
-                    data.questions.all[i].includes(type)
-                  ),
-                }}
-                set={() => {}}
-              />
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </Stack>
-    )}
-    {filter == "2" && (
-        <Stack gap={1} className="filtered">
-          {TopicWise.map((__: string) => (
-            <Accordion
-              elevation={0}
-              slots={{ transition: Fade }}
-              slotProps={{
-                transition: {
-                  unmountOnExit: true,
-                  timeout: 250,
-                },
-              }}
-            >
-              <AccordionSummary
-                sx={{
-                  mx: 0,
-                  px: 0,
-                  borderRadius: 2,
-                  fontWeight: 600,
-                }}
-                expandIcon={<IoChevronDown />}
-              >
-                {__}
-              </AccordionSummary>
-              <AccordionDetails
-                sx={{
-                  mx: 0,
-                  px: 0,
-                }}
-              >
-                <Questions
-                  checked={Boolean(checked)}
-                  data={{
-                    ...data,
-                    questions: {
-                      ...data.questions,
-                      all: data.questions.all.filter(
-                        (que, i) => data.concepts[i] == __
-                      ),
-                    },
-                    answers: data.answers.filter(
-                      (que, i) => data.concepts[i] == __
-                    ),
-                  }}
-                  set={() => {}}
-                />
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Stack>
-      )}
-      {filter == "" && (
-        <Questions checked={Boolean(checked)} data={data} set={() => {}} />
-      )}
-    </Box>
-  );
-}
-
-export function ImportantResults({ data, set }: { data: data_; set: set_ }) {
   const {
     getRootProps,
     getInputLabelProps,
@@ -174,7 +53,143 @@ export function ImportantResults({ data, set }: { data: data_; set: set_ }) {
   const [filter, setFilter] = useState("");
   const [checked, setChecked] = useState(false);
 
-  return data.answerType == 'Important Solutions' ? (
+  function FilteredResults({
+    data,
+    filter,
+    checked,
+  }: {
+    data: data_;
+    filter: string;
+    checked: boolean;
+  }) {
+    const questionTypes = uniqueValue(
+      data.questions?.categories?.map((_: string) => _.split(" | ")[0])
+    );
+    const TopicWise = uniqueValue(data.concepts);
+
+    return (
+      <Box
+        sx={{
+          my: 0,
+          mx: 1,
+        }}
+        className="important"
+      >
+        {filter == "1" && (
+          <Stack gap={1} className="filtered">
+            {questionTypes.map((type: string) => (
+              <Accordion
+                elevation={0}
+                slots={{ transition: Fade }}
+                slotProps={{
+                  transition: {
+                    unmountOnExit: true,
+                    timeout: 250,
+                  },
+                }}
+              >
+                <AccordionSummary
+                  sx={{
+                    mx: 0,
+                    px: 0,
+                    borderRadius: 2,
+                    fontWeight: 600,
+                  }}
+                  expandIcon={<IoChevronDown />}
+                >
+                  {type}
+                </AccordionSummary>
+                <AccordionDetails
+                  sx={{
+                    mx: 0,
+                    px: 0,
+                  }}
+                >
+                  <Questions
+                    selected={selected}
+                    checked={Boolean(checked)}
+                    data={{
+                      ...data,
+                      questions: {
+                        ...data.questions,
+                        all: data.questions.all.filter((_) => _.includes(type)),
+                      },
+                      answers: data.answers.filter((ans, i) =>
+                        data.questions.all[i].includes(type)
+                      ),
+                    }}
+                    set={() => {}}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Stack>
+        )}
+        {filter == "2" && (
+          <Stack gap={1} className="filtered">
+            {TopicWise.map((__: string) => (
+              <Accordion
+                elevation={0}
+                slots={{ transition: Fade }}
+                slotProps={{
+                  transition: {
+                    unmountOnExit: true,
+                    timeout: 250,
+                  },
+                }}
+              >
+                <AccordionSummary
+                  sx={{
+                    mx: 0,
+                    px: 0,
+                    borderRadius: 2,
+                    fontWeight: 600,
+                  }}
+                  expandIcon={<IoChevronDown />}
+                >
+                  {__}
+                </AccordionSummary>
+                <AccordionDetails
+                  sx={{
+                    mx: 0,
+                    px: 0,
+                  }}
+                >
+                  <Questions
+                    selected={selected}
+                    checked={Boolean(checked)}
+                    data={{
+                      ...data,
+                      questions: {
+                        ...data.questions,
+                        all: data.questions.all.filter(
+                          (que, i) => data.concepts[i] == __
+                        ),
+                      },
+                      answers: data.answers.filter(
+                        (que, i) => data.concepts[i] == __
+                      ),
+                    }}
+                    set={() => {}}
+                  />
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Stack>
+        )}
+        {filter == "" && (
+          <Questions
+            selected={selected}
+            checked={Boolean(checked)}
+            data={data}
+            set={() => {}}
+          />
+        )}
+      </Box>
+    );
+  }
+
+  return data.answerType == "Important Solutions" ? (
     <Stack gap={1}>
       {data.questions.all.length > 0 && (
         <>

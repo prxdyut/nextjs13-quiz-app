@@ -46,18 +46,23 @@ export const shouldFetchQuestions = ({
   answerType,
   questions,
 }: data_) =>
-  class_.selected && categories.selected && books.selected && chapters.selected; // Helper function to determine if answers should be fetched
+  class_.selected &&
+  categories.selected &&
+  books.selected &&
+  chapters.selected; // Helper function to determine if answers should be fetched
 export const shouldFetchAnswers = ({
   categories,
   books,
   chapters,
   class: class_,
+  questions,
 }: data_) => {
   return (
     class_.selected &&
     categories.selected &&
     books.selected &&
-    chapters.selected
+    chapters.selected &&
+    questions.all.length > 0
   );
 };
 export function findCommonWords(subjects) {
@@ -95,16 +100,16 @@ export function removeWordsFromString(inputStr, wordsToRemove): string {
   return resultString;
 }
 export function capitalizeFirstLetter(sentence) {
-      // Split the sentence into an array of words
-      let words = sentence.split(' ');
+  // Split the sentence into an array of words
+  let words = sentence.split(" ");
 
-      // Capitalize the first letter of each word
-      let capitalizedWords = words.map(word => {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-      });
-  
-      // Join the capitalized words back into a sentence
-      let capitalizedSentence = capitalizedWords.join(' ');
-  
-      return capitalizedSentence;
+  // Capitalize the first letter of each word
+  let capitalizedWords = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+
+  // Join the capitalized words back into a sentence
+  let capitalizedSentence = capitalizedWords.join(" ");
+
+  return capitalizedSentence;
 }

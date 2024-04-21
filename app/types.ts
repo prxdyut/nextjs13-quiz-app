@@ -1,30 +1,17 @@
 import { Dispatch, SetStateAction } from "react";
 
 export type solution_ = "Textbook Solutions" | "Important Solutions" | "";
-
+export type selected_ = string[]
 export type type_ = {
   all: Array<string>;
   keys?: Array<string>;
   contents?: Array<any>;
   categories?: Array<any>;
-  selected: null | number;
+  selected?: number;
+  selections?: number[];
 };
 
-export type selected_ = {
-  question: { original?: string; edited?: string; created?: string };
-  answer: { original?: string; edited?: string; created?: string };
-  from: {
-    category: string;
-    class: string;
-    book: string;
-    type: string;
-    chapter: string;
-    index: number;
-  };
-}[];
-
 export type data_ = {
-  selected: selected_;
   categories: type_;
   books: type_;
   class: type_;
@@ -36,4 +23,4 @@ export type data_ = {
   topics: type_;
 };
 
-export type set_ = Dispatch<SetStateAction<data_>>;
+export type set_ = Dispatch<SetStateAction<data_>> | Dispatch<SetStateAction<selected_>>;
