@@ -62,7 +62,7 @@ export const shouldFetchAnswers = ({
     categories.selected &&
     books.selected &&
     chapters.selected &&
-    questions.all.length > 0
+    questions.all.length
   );
 };
 export function findCommonWords(subjects) {

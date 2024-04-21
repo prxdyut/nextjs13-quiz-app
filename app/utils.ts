@@ -173,32 +173,38 @@ export const getTextbookQuestions = async (data: data_) => {
   });
   return res;
 };
+
 export const getAnswers = async (data: data_) => {
-  let answers: Array<Array<string>> = [];
-  let concepts: Array<string> = [];
+  const answersPromises = data.questions.contents.map(async (a) => {
+    try {
+      const data = await getDOMFor(a, `#content .grid_col_left`);
+      const data_ = data[0].querySelectorAll(".qbq_text_solution");
+      const data__ = data[0].querySelectorAll(
+        ".noselect + .block:not(.qbq_text_solution, .qbq_text_notes)"
+      );
 
-  await data.questions.contents.forEach(async (a) => {
-    const data = await getDOMFor(a, `#content .grid_col_left`);
-    const data_ = data[0].querySelectorAll(".qbq_text_solution");
-    const data__ = data[0].querySelectorAll(
-      ".noselect + .block:not(.qbq_text_solution, .qbq_text_notes)"
-    );
-    let content = "";
-    data__.forEach((a) => {
-      content = content + " " + a.textContent.replaceAll("Concept: ", "");
-    });
-    concepts.push(content);
+      const concepts: string = data__[0]?.textContent
+        .replaceAll("Concept: ", "")
+        .trim();
 
-    let answer: Array<string> = [];
-    data_.forEach((elem) =>
-      answer.push(
+      const answers: string[] = Array.from(data_, (elem) =>
         elem.innerHTML.replaceAll(
           'src="/images/',
           `src="${shaalaaBase}/images/`
         )
-      )
-    );
-    answers.push(answer);
+      );
+
+      return { answers, concepts };
+    } catch (error) {
+      console.error(`Error fetching answers for question: ${a}`, error);
+      return { answers: [], concepts: "" }; // Provide fallback values
+    }
   });
+
+  const results = await Promise.all(answersPromises);
+
+  const answers: string[][] = results.map((result) => result.answers);
+  const concepts: string[] = results.map((result) => result.concepts);
+
   return { answers, concepts };
 };

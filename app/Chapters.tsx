@@ -4,14 +4,16 @@ import React from "react";
 import { default_ } from "./consts";
 import { set_ } from "./types";
 import { data_ } from "./types";
+import { useData } from "../providers/data";
 
-export function Chapters({ data, set }: { data: data_; set: set_ }) {
+export function Chapters() {
+  const { data, setData } = useData();
   return (
     <Autocomplete
     disablePortal
       onChange={(e, newValue) => {
         const index = data.chapters.all.indexOf(newValue);
-        set(
+        setData(
           (_: data_): data_ => ({
             ..._,
             chapters: { ..._.chapters, selected: index + 1 },

@@ -4,15 +4,16 @@ import React, { SyntheticEvent } from "react";
 import { default_ } from "./consts";
 import { set_ } from "./types";
 import { data_ } from "./types";
+import { useData } from "../providers/data";
 
-export function Class_({ data, set }: { data: data_; set: set_; }) {
-  
+export function Class_() {
+  const { data, setData } = useData();
   return (
     <Autocomplete
       disablePortal
       onChange={(_e: SyntheticEvent, newValue: string) => {
         const index = data.class.all.indexOf(newValue);
-        set(
+        setData(
           (_: data_): data_ => ({
             ..._,
             class: { ..._.class, selected: index + 1 },

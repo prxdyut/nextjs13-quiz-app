@@ -29,28 +29,17 @@ import {
   shouldFetchClass,
 } from "./helpers";
 import { Solution } from "./Solution";
-import { ImportantResults } from "./ImportantResults";
+import { Search } from "./Search";
 import { Class_ } from "./Class";
 import { ErrorHandler } from "./ErrorHandler";
-import { useLocalStorage, useSessionStorage } from "@mantine/hooks";
+import { useData } from "../providers/data";
+import { Questions } from "./Questions";
+import { Filter } from "./Filter";
 
 export default function QuestionsPage() {
   const [error, setError] = useState<false | Error>(false);
-
-  const [data, setData] = useState<data_>({
-    categories: default_,
-    class: default_,
-    books: default_,
-    questions: default_,
-    chapters: default_,
-    topics: default_,
-    answers: [],
-    concepts: [],
-    answerType: "",
-  });
-
-  const [selected, setSelected] = useState<selected_>( []);
-  console.log(selected)
+  const { data, setData } = useData();
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,7 +120,9 @@ export default function QuestionsPage() {
           const newData =
             data.answerType == "Textbook Solutions"
               ? await getTextbookQuestions(data)
-              : await getImportantQuestions(data);
+              : data.answerType == "Important Solutions"
+              ? await getImportantQuestions(data)
+              : default_;
 
           setData((prevData) =>
             updateNestedState(prevData, "questions", newData)
@@ -172,21 +163,14 @@ export default function QuestionsPage() {
         <ErrorHandler error={error} set={setError} />
         <Stack gap={2}>
           <LoadHandler data={data} error={error} />
-          <Categories data={data} set={setData} />
-          <Class_ data={data} set={setData} />
-          <Books data={data} set={setData} />
-          <Solution data={data} set={setData} />
-          <Chapters data={data} set={setData} />
-          <TextbookResults
-            selected={{ data: selected, set: setSelected }}
-            data={data}
-            set={setData}
-          />
-          <ImportantResults
-            selected={{ data: selected, set: setSelected }}
-            data={data}
-            set={setData}
-          />
+          <Categories />
+          <Class_ />
+          <Books />
+          <Solution />
+          <Chapters />
+          <Search />
+          <Filter />
+          <Questions />
         </Stack>
       </Container>
     </MathJaxContext>
