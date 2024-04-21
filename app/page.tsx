@@ -1,13 +1,11 @@
-"use client";
-import { Box, Button, Container, Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
+"use client";;
+import { Container, Grid, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
+import { MathJaxContext } from "better-react-mathjax";
 import { Categories } from "./Categories";
 import { Books } from "./Books";
 import { Chapters } from "./Chapters";
 import { LoadHandler } from "./LoadHandler";
-import { TextbookResults } from "./TextbookResults";
-import { data_, selected_ } from "./types";
 import {
   getBookCategory,
   getBooks,
@@ -153,15 +151,11 @@ export default function QuestionsPage() {
     fetchAnswers();
   }, [data.questions]);
 
-  const config = {
-    loader: { load: ["input/asciimath", "ui/lazy"] },
-  };
 
   return (
-    <MathJaxContext config={config}>
       <Container sx={{ my: 6 }}>
         <ErrorHandler error={error} set={setError} />
-        <Stack gap={2}>
+        <Stack spacing={2}>
           <LoadHandler data={data} error={error} />
           <Categories />
           <Class_ />
@@ -173,6 +167,5 @@ export default function QuestionsPage() {
           <Questions />
         </Stack>
       </Container>
-    </MathJaxContext>
   );
 }

@@ -42,22 +42,22 @@ export function Filter() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        gap: 4
       }}
     >
-      <>
-        <FormGroup
-          sx={{
-            mr: -1,
-          }}
-        >
-          <FormControlLabel
-            control={
-              <Switch checked={showAnswers} onChange={toggleShowAnswers} />
-            }
-            label="Show Answers"
-          />
-        </FormGroup>
-      </>
+      <FormGroup
+        sx={{
+          mr: -1,
+        }}
+      >
+        <FormControlLabel
+          control={
+            <Switch checked={showAnswers} onChange={toggleShowAnswers} />
+          }
+          label="Show Answers"
+        />
+      </FormGroup>
+
       <FormControl
         sx={{
           minWidth: "6rem",

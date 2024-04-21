@@ -88,7 +88,7 @@ export function Questions() {
 
   if (showFiltered)
     return (
-      <Stack gap={0} divider={<Divider />} sx={{ mx: 1 }}>
+      <Stack gap={0} divider={<Divider />} sx={{ mx: 1 }} className="answer">
         {filterValue(options.filter, data).map((filter, i) => (
           <Accordion
             key={i}
@@ -145,14 +145,30 @@ export default function Question({
   question: string;
 }) {
   const { options, setOptions } = useOptions();
+  const { data, setData } = useData();
   const { selected, setSelected } = useSelected();
 
-  const select = selected.length && selected?.includes(question);
+  const select =
+    selected.length && selected?.find((_) => _.question == question);
+  const index = data.questions.all.indexOf(question);
 
   const toggleSelect = () => {
     select
-      ? setSelected((_) => _.filter((q) => q != question))
-      : setSelected((_) => ([ ..._, question ]));
+      ? setSelected((_) => _.filter((_) => _.question != question))
+      : setSelected((_) => [
+          ..._,
+          {
+            question,
+            config: {
+              category: data.categories.selected,
+              class: data.class.selected,
+              book: data.books.selected,
+              answerType: data.answerType,
+              chapter: data.chapters.selected,
+              index,
+            },
+          },
+        ]);
   };
 
   return (
@@ -165,8 +181,9 @@ export default function Question({
     >
       <FormControl>
         <FormControlLabel
-          control={<Checkbox checked={select}
-          onChange={toggleSelect} />}
+          control={
+            <Checkbox checked={Boolean(select)} onChange={toggleSelect} />
+          }
           label={"Select"}
         />
       </FormControl>
@@ -184,6 +201,9 @@ export default function Question({
           />
         </MathJax>
       </Box>
+      <Button onClick={() => navigator.clipboard.writeText(question)}>
+        Copy to Clipboard
+      </Button>
       {options.showAnswers &&
         answers?.map((ans, i) => (
           <Accordion

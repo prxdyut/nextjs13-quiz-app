@@ -12,7 +12,7 @@ const OptionsContext = createContext(null);
 
 export const OptionsProvider = ({ children }) => {
   const [options, setOptions] = useState<options_>({
-    filter: "0",
+    filter: "",
     search: "",
     showAnswers: false,
   });

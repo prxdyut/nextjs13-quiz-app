@@ -31,13 +31,48 @@ a.button_link.view_solution, .header_text, .qbq_show_hide_solution{
   flex-direction: column;
   gap: 16px;
 }
+.answer > .html_wrap > .html_text{
+  
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
 .filtered .qp_result_data_data_meta, .qp_result_data_data_inner {
   display: none;
 }
-
+ul.qbq_items {
+  margin-left: 24px;
+}
 .important .answer{
 display: flex;
 flex-direction: column-reverse;
 margin-bottom: 8px;
+}
+
+
+.question-paper .section-title{
+
+}
+.question-paper .main-question-title{
+
+}
+.question-paper *{
+  text-transform: capitalize;
+  font-size: 1.1rem;
+}
+.question-paper .html_text > p > strong{
+  font-weight: normal;
+}
+.question-paper .html_text *{
+  font-weight: normal;
+}
+.question-paper .qp_result_data_data_meta {
+  display: none;
+}
+.question-paper .html_text p {
+  margin-bottom: 8px;
+}
+.question-paper .html_text p:has(> strong) {
+  margin-bottom: 0;
 }

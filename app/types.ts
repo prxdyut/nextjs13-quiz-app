@@ -1,7 +1,18 @@
 import { Dispatch, SetStateAction } from "react";
 
 export type solution_ = "Textbook Solutions" | "Important Solutions" | "";
-export type selected_ = string[];
+export type selected_ = {
+  question: string;
+  config: {
+    category: number;
+    class: number;
+    book: number;
+    answerType: solution_;
+    chapter: number;
+    index: number;
+  };
+}[];
+
 export type type_ = {
   all: Array<string>;
   keys?: Array<string>;
