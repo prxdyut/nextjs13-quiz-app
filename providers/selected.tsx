@@ -4,15 +4,24 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { options_, selected_ } from "../app/types";
+import { useLocalStorage, useSessionStorage } from "@mantine/hooks";
 
 const SelectedContext = createContext(null);
 
 export const SelectedProvider = ({ children }) => {
-  const [selected, setSelected] = useState<selected_>([]);
-
+  const [selected, setSelected] = useSessionStorage<selected_>({
+    key: "s",
+    defaultValue: {
+      section: { id: "", title: "", marks: '', location: [], edit: false },
+      questions: [],
+      question: { html: "", location: [], edit: false },
+    },
+  });
+  
   return (
     <SelectedContext.Provider value={{ selected, setSelected }}>
       {children}

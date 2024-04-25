@@ -15,10 +15,17 @@ export const OptionsProvider = ({ children }) => {
     filter: "",
     search: "",
     showAnswers: false,
+    questionDrawer: false,
+    sectionDrawer: false,
   });
 
+  const getSome = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+    return "abc";
+  };
+
   return (
-    <OptionsContext.Provider value={{ options, setOptions }}>
+    <OptionsContext.Provider value={{ options, setOptions, getSome }}>
       {children}
     </OptionsContext.Provider>
   );

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
@@ -13,6 +13,7 @@ import { DataProvider } from "../providers/data";
 import { OptionsProvider } from "../providers/options";
 import { SelectedProvider } from "../providers/selected";
 import { MathJaxContext } from "better-react-mathjax";
+import { QuestionPaperProvider } from "../providers/question_paper";
 
 export default function RootLayout({ children }) {
   const config = {
@@ -36,7 +37,10 @@ export default function RootLayout({ children }) {
         <MathJaxContext config={config}>
           <DataProvider>
             <OptionsProvider>
-              <SelectedProvider>{children}</SelectedProvider>
+              <SelectedProvider>
+                {" "}
+                <QuestionPaperProvider> {children}</QuestionPaperProvider>
+              </SelectedProvider>
             </OptionsProvider>
           </DataProvider>
         </MathJaxContext>

@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { useOptions } from "../providers/options";
 
 const drawerBleeding = 56;
 
@@ -38,12 +39,12 @@ const Puller = styled("div")(({ theme }) => ({
   left: "calc(50% - 15px)",
 }));
 
-export default function SelectedDrawer(props: Props) {
+export function SectionDrawer(props: Props) {
   const { window, children } = props;
-  const [open, setOpen] = React.useState(false);
-
+  const { options, setOptions } = useOptions();
+  const open = options.sectionDrawer;
   const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
+    setOptions((_) => ({ ..._, sectionDrawer: newOpen }));
   };
 
   const container =
@@ -55,24 +56,21 @@ export default function SelectedDrawer(props: Props) {
       <Global
         styles={{
           ".MuiDrawer-root > .MuiPaper-root": {
-            height: `calc(50% - ${drawerBleeding}px)`,
+            height: `calc(90% - ${drawerBleeding}px)`,
             overflow: "visible",
           },
         }}
       />
-      <Box sx={{ textAlign: "center", pt: 1 }}>
-        <Button onClick={toggleDrawer(true)}>Open</Button>
-      </Box>
       <SwipeableDrawer
         container={container}
         anchor="bottom"
         open={open}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
-        swipeAreaWidth={drawerBleeding}
+        swipeAreaWidth={0}
         disableSwipeToOpen={false}
         ModalProps={{
-          keepMounted: true,
+          keepMounted: false,
         }}
       >
         <StyledBox

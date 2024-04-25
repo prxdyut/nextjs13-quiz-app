@@ -18,10 +18,11 @@ import { MathJax } from "better-react-mathjax";
 import { filterValue_, options_, selected_, set_ } from "./types";
 import { data_ } from "./types";
 import { useData } from "../providers/data";
-import { uniqueValue } from "./helpers";
+import { addQuestion, addSection, changeQuestion, uniqueValue } from "./helpers";
 import { useOptions } from "../providers/options";
 import { IoChevronDown } from "react-icons/io5";
 import { useSelected } from "../providers/selected";
+import { useQuestionPaper } from "../providers/question_paper";
 
 export function Questions() {
   const { data } = useData();
@@ -137,7 +138,7 @@ export function Questions() {
   );
 }
 
-export default function Question({
+export function Question({
   answers,
   question,
 }: {
@@ -147,35 +148,56 @@ export default function Question({
   const { options, setOptions } = useOptions();
   const { data, setData } = useData();
   const { selected, setSelected } = useSelected();
+  const { questionPaper, setQuestionPaper } = useQuestionPaper();
 
   const select =
-    selected.length && selected?.find((_) => _.question == question);
+    selected.questions?.length &&
+    selected?.questions.find((_) => _.question == question);
   const index = data.questions.all.indexOf(question);
 
   const toggleSelect = () => {
+    const location = selected.question.location;
     select
-      ? setSelected((_) => _.filter((_) => _.question != question))
-      : setSelected((_) => [
+      ? setSelected((_) => ({
           ..._,
-          {
-            question,
-            config: {
-              category: data.categories.selected,
-              class: data.class.selected,
-              book: data.books.selected,
-              answerType: data.answerType,
-              chapter: data.chapters.selected,
-              index,
+          questions: _.questions.filter((_) => _.question != question),
+        }))
+      : setSelected((_) => ({
+          ..._,
+          questions: [
+            ...(_?.questions || []),
+            {
+              question,
+              answers,
+              config: {
+                category: data.categories.selected,
+                class: data.class.selected,
+                book: data.books.selected,
+                answerType: data.answerType,
+                chapter: data.chapters.selected,
+                index,
+              },
             },
-          },
-        ]);
+          ],
+          question: { ..._.question, html: question },
+        }));
+
+        if (!select && !selected.question.edit) {
+          setQuestionPaper((_) =>
+            addQuestion(_, location as number[], question)
+          );
+        }
+        if (!select && selected.question.edit) {
+          setQuestionPaper((_) =>
+            changeQuestion(_, location as number[], question)
+          );
+        }
   };
 
   return (
     <Box
       sx={{
         fontSize: "1.1rem",
-        // my:4
       }}
       onClick={() => {}}
     >
@@ -201,9 +223,6 @@ export default function Question({
           />
         </MathJax>
       </Box>
-      <Button onClick={() => navigator.clipboard.writeText(question)}>
-        Copy to Clipboard
-      </Button>
       {options.showAnswers &&
         answers?.map((ans, i) => (
           <Accordion

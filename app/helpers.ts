@@ -1,4 +1,4 @@
-import { data_, type_ } from "./types";
+import { Question_, Section_, data_, type_ } from "./types";
 
 export function uniqueValue(exercises: Array<string>) {
   const uniqueExercises = new Set(exercises);
@@ -25,6 +25,11 @@ export const updateNestedState = (prevState, nestedProperty, newData) => ({
     ...newData,
   },
 });
+function arraymove(arr, fromIndex, toIndex) {
+  var element = arr[fromIndex];
+  arr.splice(fromIndex, 1);
+  arr.splice(toIndex, 0, element);
+}
 
 export const shouldFetchCategories = ({ categories }: data_) =>
   !categories.all.length;
@@ -46,10 +51,7 @@ export const shouldFetchQuestions = ({
   answerType,
   questions,
 }: data_) =>
-  class_.selected &&
-  categories.selected &&
-  books.selected &&
-  chapters.selected; // Helper function to determine if answers should be fetched
+  class_.selected && categories.selected && books.selected && chapters.selected; // Helper function to determine if answers should be fetched
 export const shouldFetchAnswers = ({
   categories,
   books,
@@ -112,4 +114,241 @@ export function capitalizeFirstLetter(sentence) {
   let capitalizedSentence = capitalizedWords.join(" ");
 
   return capitalizedSentence;
+}
+export const processQuestion = (html: string) => {
+  return html
+    .replaceAll("Multiple choice question.", "")
+    .replaceAll("Answer the following in one or two sentences.", "");
+};
+
+export function romanize(num: number) {
+  var lookup = {
+      M: 1000,
+      CM: 900,
+      D: 500,
+      CD: 400,
+      C: 100,
+      XC: 90,
+      L: 50,
+      XL: 40,
+      X: 10,
+      IX: 9,
+      V: 5,
+      IV: 4,
+      I: 1,
+    },
+    roman = "",
+    i;
+  for (i in lookup) {
+    while (num >= lookup[i]) {
+      roman += i;
+      num -= lookup[i];
+    }
+  }
+  return roman.toLowerCase();
+}
+
+export function deleteSection(questionPaper: Section_[], location: number[]) {
+  let temp = [...questionPaper];
+
+  function fn(data: Section_[], depth: number) {
+    if (location.length == 1) {
+      const toDelete = data[location[depth]];
+      temp = temp.filter((_) => _.id != toDelete.id);
+    } else if (depth == location.length - 2) {
+      const toDelete = data[location[depth]].sections[location[depth + 1]];
+      data[location[depth]].sections = data[location[depth]].sections.filter(
+        (_) => _.id != toDelete.id
+      );
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return temp;
+}
+
+export function moveSection(
+  questionPaper: Section_[],
+  location: number[],
+  n: number
+) {
+  let temp = [...questionPaper];
+
+  function fn(data: Section_[], depth: number) {
+    if (location.length == 1) {
+      if (
+        location[depth] + n >= 0 &&
+        location[depth] + n <= location.length + 1
+      ) {
+        arraymove(data, location[depth], location[depth] + n);
+      }
+    } else if (depth == location.length - 2) {
+      if (
+        location[depth + 1] + n >= 0 &&
+        location[depth + 1] + n <= location.length + 1
+      ) {
+        arraymove(
+          data[location[depth]].sections,
+          location[depth + 1],
+          location[depth + 1] + n
+        );
+      }
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return temp;
+}
+
+export function addSection(
+  questionPaper: Section_[],
+  location: number[],
+  newData: { id: string; title: string }
+) {
+  let temp = [...questionPaper];
+
+  function fn(data: Section_[], depth: number) {
+    if (location[0] == -1) {
+      temp.push({ ...newData, questions: [], sections: [] });
+    } else if (location.length == 1) {
+      temp[location[depth]].sections.push({
+        ...newData,
+        questions: [],
+        sections: [],
+      });
+    } else if (depth == location.length - 1) {
+      data[location[depth]].sections.push({
+        ...newData,
+        questions: [],
+        sections: [],
+      });
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return temp;
+}
+export function editSection(
+  questionPaper: Section_[],
+  location: number[],
+  newData: { id: string; title: string }
+) {
+  let temp = [...questionPaper];
+
+  function fn(data: Section_[], depth: number) {
+    if (location.length == 1) {
+      temp[location[depth]] = { ...temp[location[depth]], ...newData };
+    } else if (depth == location.length - 1) {
+      data[location[depth]] = { ...data[location[depth]], ...newData };
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return temp;
+}
+
+export function addQuestion(
+  questionPaper: Section_[],
+  location: number[],
+  question: string
+) {
+  let temp = [...questionPaper];
+
+  function fn(data: Section_[], depth: number) {
+    if (depth == location.length - 1) {
+      data[location[depth]].questions.push({
+        id: `(${romanize(data[location[depth]].questions.length + 1)})`,
+        text: question,
+      });
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return temp;
+}
+
+export function changeQuestion(
+  questionPaper: Section_[],
+  location: number[],
+  question: string
+) {
+  let temp = [...questionPaper];
+
+  function fn(data: Section_[], depth: number) {
+    if (depth == location.length - 2) {
+      data[location[depth]].questions[location[depth + 1]] = {
+        ...data[location[depth]].questions[location[depth + 1]],
+        text: question,
+      };
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return temp;
+}
+
+export function deleteQuestion(questionPaper: Section_[], location: number[]) {
+  let temp = [...questionPaper];
+
+  function fn(data: Section_[], depth: number) {
+    if (depth == location.length - 2) {
+      const toDelete = data[location[depth]].questions[location[depth + 1]];
+      data[location[depth]].questions = data[location[depth]].questions.filter(
+        (_, index) => index != location[depth + 1]
+      );
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return temp;
+}
+
+export function moveQuestion(
+  questionPaper: Section_[],
+  location: number[],
+  n: number
+) {
+  let temp = [...questionPaper];
+
+  function fn(data: Section_[], depth: number) {
+    if (depth == location.length - 2) {
+      if (
+        location[depth + 1] + n >= 0 &&
+        location[depth + 1] + n <= location.length + 1
+      ) {
+        arraymove(
+          data[location[depth]].questions,
+          location[depth + 1],
+          location[depth + 1] + n
+        );
+      }
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return temp;
 }
