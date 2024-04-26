@@ -19,11 +19,22 @@ export const QuestionPaper = () => {
 
   return (
     <Container
-      sx={{ minWidth: 800, width: "100%", py: 16 }}
+      sx={{ minWidth: 800, width: "100%", py: 4 }}
       className="question-paper"
     >
-      <Button onClick={clickedSection}>Add Section</Button>
-      <Stack sx={{ pl: 2 }} spacing={2}>
+  
+        <Button
+          onClick={() => window.print()}
+          className="no-print"
+          variant="contained"
+        >
+          Print
+        </Button>
+    
+      <Button onClick={clickedSection} className="no-print">
+        Add Section
+      </Button>
+      <Stack sx={{ pl: 2, mt:2 }} spacing={2}>
         {questionPaper.map((mainQuestion, index) => (
           <SectionComponent
             index={index}

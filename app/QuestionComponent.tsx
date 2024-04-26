@@ -112,7 +112,7 @@ export const QuestionComponent = ({
         </Box>
       </MathJax>
       <Box sx={{ pr: 4.6 }}>
-        <Button onClick={handleClick}>
+        <Button onClick={handleClick} className="no-print">
           <span style={{ fontSize: 12 }}>OPTIONS</span>
         </Button>
         <Popover

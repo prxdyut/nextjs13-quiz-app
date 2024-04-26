@@ -113,7 +113,7 @@ export const SectionComponent = ({
         </div>
 
         <div>
-          <Button onClick={handleClick}>
+          <Button onClick={handleClick} className="no-print">
             <span style={{ fontSize: 12 }}>OPTIONS</span>
           </Button>
           &nbsp;

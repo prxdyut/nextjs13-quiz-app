@@ -217,17 +217,17 @@ export function addSection(
     if (location[0] == -1) {
       temp.push({ ...newData, questions: [], sections: [] });
     } else if (location.length == 1) {
-      temp[location[depth]].sections.push({
+      temp[location[depth]].sections.push(({
         ...newData,
         questions: [],
         sections: [],
-      });
+      } as never));
     } else if (depth == location.length - 1) {
-      data[location[depth]].sections.push({
+      data[location[depth]].sections.push(({
         ...newData,
         questions: [],
         sections: [],
-      });
+      } as never));
     } else {
       fn(data[location[depth]].sections, depth + 1);
     }
@@ -268,10 +268,10 @@ export function addQuestion(
 
   function fn(data: Section_[], depth: number) {
     if (depth == location.length - 1) {
-      data[location[depth]].questions.push({
+      data[location[depth]].questions.push(({
         id: `(${romanize(data[location[depth]].questions.length + 1)})`,
         text: question,
-      });
+      } as never));
     } else {
       fn(data[location[depth]].sections, depth + 1);
     }

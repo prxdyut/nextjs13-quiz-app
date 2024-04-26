@@ -1,18 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useOptions } from "../providers/options";
-import JoditEditor from "jodit-react";
+// import JoditEditor from "jodit-react";
 import { Box, Button, Stack } from "@mui/material";
 import { useSelected } from "../providers/selected";
 import { useQuestionPaper } from "../providers/question_paper";
 import { addQuestion, changeQuestion, getQuestion } from "./helpers";
+import dynamic from "next/dynamic";
+
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 export default function QuestionEditor() {
+
   const { options, setOptions } = useOptions();
   const { selected, setSelected } = useSelected();
   const { questionPaper, setQuestionPaper } = useQuestionPaper();
 
   const editor = React.useRef(null);
   const [content, setContent] = React.useState("");
+  const [client, setClient] = useState(false);
+  useEffect(() => {
+    setClient(true);
+  }, []);
+
   const placeholder = "Write Question";
   const config = {
     readonly: false,
@@ -28,11 +37,12 @@ export default function QuestionEditor() {
     }
     setOptions((_) => ({ ..._, questionDrawer: false }));
   };
-    const q = getQuestion(questionPaper, location as number[]);
+  const q = getQuestion(questionPaper, location as number[]);
   useEffect(() => {
-    setContent(q)
+    setContent(q);
   }, [location]);
 
+  if (!client) return null;
 
   return (
     <Stack

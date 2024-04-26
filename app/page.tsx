@@ -171,7 +171,9 @@ export default function QuestionsPage() {
     <Box sx={{ px: 0 }}>
       <ErrorHandler error={error} set={setError} />
       <QuestionDrawer>
-        <Typography variant="h6">{selected.question.change ? 'Edit your' : 'Create a new' } question...</Typography>
+        <Typography variant="h6">
+          {selected.question.change ? "Edit your" : "Create a new"} question...
+        </Typography>
         <br />
         <QuestionEditor />
         <br />
@@ -194,6 +196,7 @@ export default function QuestionsPage() {
         <Section />
       </SectionDrawer>
       <Box sx={{ width: "100%", height: "100vh", overflow: "auto" }}>
+        
         <QuestionPaper />
       </Box>
     </Box>

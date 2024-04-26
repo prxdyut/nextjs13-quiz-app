@@ -76,3 +76,14 @@ margin-bottom: 8px;
 .question-paper .html_text p:has(> strong) {
   margin-bottom: 0;
 }
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  .no-print{
+    display: none !important;
+  }
+}

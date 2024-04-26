@@ -10,14 +10,8 @@ import { default_ } from "../app/consts";
 import { Section_, data_ } from "../app/types";
 
 const QuestionPaperContext = createContext(null);
-
-import { exampleQuestionPaper } from "../providers/data";
-
 export const QuestionPaperProvider = ({ children }) => {
   const [questionPaper, setQuestionPaper] = useState<Section_[]>(
-    //   [
-    //   { id: "  Q1", title: "Answer the following", sections: [], questions: [] },
-    // ]
     [
       {
         id: "Q1",
