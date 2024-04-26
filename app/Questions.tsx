@@ -179,15 +179,15 @@ export function Question({
               },
             },
           ],
-          question: { ..._.question, html: question },
+          question: { ..._.question, html: question, change: false, edit: false },
         }));
 
-        if (!select && !selected.question.edit) {
+        if (!select && !selected.question.change) {
           setQuestionPaper((_) =>
             addQuestion(_, location as number[], question)
           );
         }
-        if (!select && selected.question.edit) {
+        if (!select && selected.question.change) {
           setQuestionPaper((_) =>
             changeQuestion(_, location as number[], question)
           );

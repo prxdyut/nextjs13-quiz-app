@@ -20,7 +20,13 @@ import { Question_ } from "./types";
 import { useOptions } from "../providers/options";
 import { useSelected } from "../providers/selected";
 import { useQuestionPaper } from "../providers/question_paper";
-import { MdArrowDownward, MdArrowUpward, MdAutorenew, MdCyclone, MdDelete } from "react-icons/md";
+import {
+  MdArrowDownward,
+  MdArrowUpward,
+  MdAutorenew,
+  MdCyclone,
+  MdDelete,
+} from "react-icons/md";
 import { useState } from "react";
 
 // Component to render a single question
@@ -47,7 +53,10 @@ export const QuestionComponent = ({
 
   const change = () => {
     setOptions((_) => ({ ..._, questionDrawer: true }));
-    setSelected((_) => ({ ..._, question: { ..._.question, location, edit: true } }));
+    setSelected((_) => ({
+      ..._,
+      question: { ..._.question, location, edit: true, change: true },
+    }));
   };
 
   const up = () => {

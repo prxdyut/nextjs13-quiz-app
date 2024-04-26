@@ -209,7 +209,7 @@ export function moveSection(
 export function addSection(
   questionPaper: Section_[],
   location: number[],
-  newData: { id: string; title: string }
+  newData: { id: string; title: string, marks: string }
 ) {
   let temp = [...questionPaper];
 
@@ -282,6 +282,7 @@ export function addQuestion(
   return temp;
 }
 
+
 export function changeQuestion(
   questionPaper: Section_[],
   location: number[],
@@ -303,6 +304,25 @@ export function changeQuestion(
   fn(temp, 0);
 
   return temp;
+}
+export function getQuestion(
+  questionPaper: Section_[],
+  location: number[],
+) {
+  let temp = [...questionPaper];
+  let res = ''
+
+  function fn(data: Section_[], depth: number) {
+    if (depth == location.length - 2) {
+      res = data[location[depth]].questions[location[depth + 1]].text
+    } else {
+      fn(data[location[depth]].sections, depth + 1);
+    }
+  }
+
+  fn(temp, 0);
+
+  return res;
 }
 
 export function deleteQuestion(questionPaper: Section_[], location: number[]) {

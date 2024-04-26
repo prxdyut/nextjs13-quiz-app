@@ -1,10 +1,11 @@
 "use client";
 import { Box, Button, Container, Stack } from "@mui/material";
-import { MainQuestionComponent } from "./MainQuestionComponent";
 import { SectionComponent } from "./SectionComponent";
 import { useQuestionPaper } from "../providers/question_paper";
 import { useOptions } from "../providers/options";
 import { useSelected } from "../providers/selected";
+import JoditEditor from "jodit-react";
+import { useMemo, useRef, useState } from "react";
 
 export const QuestionPaper = () => {
   const { questionPaper, setQuestionPaper } = useQuestionPaper();
@@ -17,12 +18,15 @@ export const QuestionPaper = () => {
   };
 
   return (
-    <Container sx={{ minWidth: 800, width: "100%", py:16 }} className='question-paper'>
+    <Container
+      sx={{ minWidth: 800, width: "100%", py: 16 }}
+      className="question-paper"
+    >
       <Button onClick={clickedSection}>Add Section</Button>
       <Stack sx={{ pl: 2 }} spacing={2}>
         {questionPaper.map((mainQuestion, index) => (
           <SectionComponent
-          index={index}
+            index={index}
             level={0}
             location={[index]}
             key={mainQuestion.id}

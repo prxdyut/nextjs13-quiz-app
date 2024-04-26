@@ -86,7 +86,7 @@ export function SectionDrawer(props: Props) {
         >
           <Puller />
           <Typography sx={{ p: 2, color: "text.secondary" }}>
-            51 results
+            Section
           </Typography>
         </StyledBox>
         <StyledBox

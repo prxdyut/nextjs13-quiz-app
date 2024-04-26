@@ -1,5 +1,12 @@
 "use client";
-import { Box, Button, Container, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { Categories } from "./Categories";
 import { Books } from "./Books";
@@ -33,7 +40,6 @@ import { useData } from "../providers/data";
 import { Questions } from "./Questions";
 import { Filter } from "./Filter";
 import { useSelected } from "../providers/selected";
-import { exampleQuestionPaper } from "../providers/data";
 import { SectionComponent } from "./SectionComponent";
 import { QuestionDrawer } from "./QuestionDrawer";
 import { SectionDrawer } from "./SectionDrawer";
@@ -41,6 +47,7 @@ import { Section } from "./Section";
 import { useQuestionPaper } from "../providers/question_paper";
 import { useOptions } from "../providers/options";
 import { QuestionPaper } from "./QuestionPaper";
+import QuestionEditor from "./QuestionEditor";
 
 export default function QuestionsPage() {
   const [error, setError] = useState<false | Error>(false);
@@ -164,8 +171,14 @@ export default function QuestionsPage() {
     <Box sx={{ px: 0 }}>
       <ErrorHandler error={error} set={setError} />
       <QuestionDrawer>
+        <Typography variant="h6">{selected.question.change ? 'Edit your' : 'Create a new' } question...</Typography>
+        <br />
+        <QuestionEditor />
+        <br />
+        <Divider>Or</Divider>
+        <Typography variant="h6">Select a question...</Typography>
+        <LoadHandler data={data} error={error} />
         <Stack spacing={2}>
-          <LoadHandler data={data} error={error} />
           <Categories />
           <Class_ />
           <Books />

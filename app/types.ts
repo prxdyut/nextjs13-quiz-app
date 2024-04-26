@@ -14,8 +14,19 @@ export type selected_ = {
       index: number;
     };
   }[];
-  section: { id: string; title: string; marks: string, location: number[]; edit: boolean };
-  question: { html: string; location: number[]; edit: boolean };
+  section: {
+    id: string;
+    title: string;
+    marks: string;
+    location: number[];
+    edit: boolean;
+  };
+  question: {
+    html: string;
+    location: number[];
+    edit: boolean;
+    change: boolean;
+  };
 };
 
 export type type_ = {
@@ -67,5 +78,5 @@ export type Section_ = {
   title: string;
   sections: Section_[];
   questions: Question_[];
-  marks: string
+  marks: string;
 };

@@ -18,7 +18,7 @@ export const SelectedProvider = ({ children }) => {
     defaultValue: {
       section: { id: "", title: "", marks: '', location: [], edit: false },
       questions: [],
-      question: { html: "", location: [], edit: false },
+      question: { html: "", location: [], edit: false, change: false },
     },
   });
   

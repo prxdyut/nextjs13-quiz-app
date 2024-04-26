@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { QuestionComponent } from "./QuestionComponent";
 import { useOptions } from "../providers/options";
-import { exampleQuestionPaper } from "../providers/data";
 import { useEffect, useState } from "react";
 import { Section_ } from "./types";
 import { useSelected } from "../providers/selected";
@@ -42,7 +41,6 @@ export const SectionComponent = ({
 }) => {
   const { options, setOptions } = useOptions();
   const { selected, setSelected } = useSelected();
-  const [data, setData] = useState<Section_[]>(exampleQuestionPaper);
   const { setQuestionPaper, questionPaper } = useQuestionPaper();
 
   const add = () => {
@@ -68,7 +66,7 @@ export const SectionComponent = ({
     setOptions((_) => ({ ..._, questionDrawer: true }));
     setSelected((_) => ({
       ..._,
-      question: { ..._.question, location, edit: false },
+      question: { ..._.question, location, change: false },
     }));
   };
 

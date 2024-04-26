@@ -9,6 +9,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { useOptions } from "../providers/options";
+import JoditEditor from "jodit-react";
 
 const drawerBleeding = 56;
 
@@ -49,6 +50,14 @@ export function QuestionDrawer(props: Props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  const editor = React.useRef(null);
+  const [content, setContent] = React.useState("");
+  const placeholder = "Write Question";
+  const config = {
+    readonly: false,
+    placeholder: placeholder || "Start typings...",
+  };
 
   return (
     <Root>

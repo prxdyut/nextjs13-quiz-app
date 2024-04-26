@@ -14,9 +14,7 @@ export function LoadHandler({
 }) {
   return (
     <Box sx={{ display: "flex", minHeight: 32 }}>
-      <Typography variant="h6" sx={{ width: "100%", textAlign: "center" }}>
-        Answer Bank
-      </Typography>
+      
       <Snack
         open={Boolean(error) && data.categories.all.length == 0}
         message="Loading Categories"
