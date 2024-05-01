@@ -8,16 +8,18 @@ import React, {
 } from "react";
 import { default_ } from "../app/consts";
 import { Section_, data_ } from "../app/types";
+import { useLocalStorage } from "@mantine/hooks";
 
 const QuestionPaperContext = createContext(null);
 export const QuestionPaperProvider = ({ children }) => {
-  const [questionPaper, setQuestionPaper] = useState<Section_[]>(
-    [
+  const [questionPaper, setQuestionPaper] = useLocalStorage<Section_[]>({
+    key: "question-paper",
+    defaultValue: [
       {
         id: "Q1",
         title: "Chapter 1: Reproduction in Plants",
         questions: [],
-        marks: '100',
+        marks: "100",
         sections: [
           {
             id: "sec1",
@@ -34,7 +36,7 @@ export const QuestionPaperProvider = ({ children }) => {
               },
             ],
             sections: [],
-            marks: '20'
+            marks: "20",
           },
           {
             id: "sec2",
@@ -45,16 +47,15 @@ export const QuestionPaperProvider = ({ children }) => {
               },
             ],
             sections: [],
-            marks: '10'
+            marks: "10",
           },
-          
         ],
       },
       {
         id: "Q2",
         title: "Chapter 2: Genetics and Evolution",
         questions: [],
-        marks: '50',
+        marks: "50",
         sections: [
           {
             id: "sec3",
@@ -65,13 +66,13 @@ export const QuestionPaperProvider = ({ children }) => {
               },
             ],
             sections: [],
-            marks: '5'
+            marks: "5",
           },
         ],
       },
-    ]
-  );
-  console.log(questionPaper);
+    ],
+  });
+
   return (
     <QuestionPaperContext.Provider value={{ questionPaper, setQuestionPaper }}>
       {children}

@@ -116,9 +116,12 @@ export function capitalizeFirstLetter(sentence) {
   return capitalizedSentence;
 }
 export const processQuestion = (html: string) => {
-  return html
-    .replaceAll("Multiple choice question.", "")
-    .replaceAll("Answer the following in one or two sentences.", "");
+  if (html)
+    return html
+      .replaceAll("Multiple choice question.", "")
+      .replaceAll("Answer the following in one or two sentences.", "");
+
+  return html;
 };
 
 export function romanize(num: number) {
@@ -209,7 +212,7 @@ export function moveSection(
 export function addSection(
   questionPaper: Section_[],
   location: number[],
-  newData: { id: string; title: string, marks: string }
+  newData: { id: string; title: string; marks: string }
 ) {
   let temp = [...questionPaper];
 
@@ -217,17 +220,17 @@ export function addSection(
     if (location[0] == -1) {
       temp.push({ ...newData, questions: [], sections: [] });
     } else if (location.length == 1) {
-      temp[location[depth]].sections.push(({
+      temp[location[depth]].sections.push({
         ...newData,
         questions: [],
         sections: [],
-      } as never));
+      } as never);
     } else if (depth == location.length - 1) {
-      data[location[depth]].sections.push(({
+      data[location[depth]].sections.push({
         ...newData,
         questions: [],
         sections: [],
-      } as never));
+      } as never);
     } else {
       fn(data[location[depth]].sections, depth + 1);
     }
@@ -268,10 +271,10 @@ export function addQuestion(
 
   function fn(data: Section_[], depth: number) {
     if (depth == location.length - 1) {
-      data[location[depth]].questions.push(({
+      data[location[depth]].questions.push({
         id: `(${romanize(data[location[depth]].questions.length + 1)})`,
         text: question,
-      } as never));
+      } as never);
     } else {
       fn(data[location[depth]].sections, depth + 1);
     }
@@ -281,7 +284,6 @@ export function addQuestion(
 
   return temp;
 }
-
 
 export function changeQuestion(
   questionPaper: Section_[],
@@ -305,18 +307,17 @@ export function changeQuestion(
 
   return temp;
 }
-export function getQuestion(
-  questionPaper: Section_[],
-  location: number[],
-) {
+export function getQuestion(questionPaper: Section_[], location: number[]) {
   let temp = [...questionPaper];
-  let res = ''
+  let res = "";
 
   function fn(data: Section_[], depth: number) {
-    if (depth == location.length - 2) {
-      res = data[location[depth]].questions[location[depth + 1]].text
+    if (location.length == 1) {
+      res = "";
+    } else if (depth == location.length - 2) {
+      res = data[location[depth]].questions[location[depth + 1]]?.text;
     } else {
-      fn(data[location[depth]].sections, depth + 1);
+      fn(data[location[depth]]?.sections || [], depth + 1);
     }
   }
 
